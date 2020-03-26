@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
-public class ConferenceRoom {
+public class DiningRoom {
 
     private int capacity;
     private String name;
     private ArrayList<Guest> guests;
 
-    public ConferenceRoom(int capacity, String name) {
+    public DiningRoom(int capacity, String name) {
         this.capacity = capacity;
         this.name = name;
         this.guests = new ArrayList<Guest>();

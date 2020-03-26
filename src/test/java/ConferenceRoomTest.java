@@ -1,52 +1,64 @@
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class ConferenceRoomTest {
 
-    private ConferenceRoom conferenceRoom;
-    private Guest guest;
+    ConferenceRoom conferenceRoom;
+    Guest guest1;
+    Guest guest2;
+    Guest guest3;
 
     @Before
-    public void setUp(){
-        conferenceRoom = new ConferenceRoom(
-                "Hopper",
-                100
-        );
-        guest = new Guest("Sky Su");
+    public void setUp() {
+        conferenceRoom = new ConferenceRoom(2, "Conference Room 1");
+        guest1 = new Guest("Zsolt");
+        guest2 = new Guest("Louise");
+        guest3 = new Guest("Sky");
     }
 
     @Test
-    public void shouldStartEmpty(){
-        assertEquals(0, conferenceRoom.numberOfGuests());
+    public void hasCapacity() {
+        assertEquals(2, conferenceRoom.getCapacity());
     }
 
     @Test
-    public void canAddGuest(){
-        conferenceRoom.addGuest(guest);
-        assertEquals(1, conferenceRoom.numberOfGuests());
+    public void hasName() {
+        assertEquals("Conference Room 1", conferenceRoom.getName());
     }
 
     @Test
-    public void canRemoveGuest(){
-        conferenceRoom.addGuest(guest);
-        conferenceRoom.removeGuest(guest);
-        assertEquals(0, conferenceRoom.numberOfGuests());
+    public void guestListSizeStartsAt0() {
+        assertEquals(0, conferenceRoom.guestListSize());
     }
 
     @Test
-    public void canCheckIfFull(){
-        ConferenceRoom smallConferenceRoom = new ConferenceRoom("Small room", 1);
-        smallConferenceRoom.addGuest(guest);
-        assertTrue(smallConferenceRoom.isFull());
+    public void canCheckInGuest_underCapacity() {
+        conferenceRoom.checkInGuest(guest1);
+        assertEquals(1, conferenceRoom.guestListSize());
     }
 
     @Test
-    public void cannotAddGuestIfFull(){
-        ConferenceRoom smallConferenceRoom = new ConferenceRoom("Small room", 1);
-        smallConferenceRoom.addGuest(guest);
-        smallConferenceRoom.addGuest(guest);
-        assertEquals(1, smallConferenceRoom.numberOfGuests());
+    public void canCheckInGuest_atCapacity() {
+        conferenceRoom.checkInGuest(guest1);
+        conferenceRoom.checkInGuest(guest2);
+        assertEquals(2, conferenceRoom.guestListSize());
+    }
+
+    @Test
+    public void cantCheckInGuest_overCapacity() {
+        conferenceRoom.checkInGuest(guest1);
+        conferenceRoom.checkInGuest(guest2);
+        conferenceRoom.checkInGuest(guest3);
+        assertEquals(2, conferenceRoom.guestListSize());
+    }
+
+    @Test
+    public void canCheckOutGuests() {
+        conferenceRoom.checkInGuest(guest1);
+        conferenceRoom.checkInGuest(guest2);
+        conferenceRoom.checkOutGuests();
+        assertEquals(0, conferenceRoom.guestListSize());
     }
 }
